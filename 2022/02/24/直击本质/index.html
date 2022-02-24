@@ -5,12 +5,12 @@
   <meta charset="UTF-8">
   <meta name="baidu-site-verification" content="uFV75F3ynA" />
   
-    <title>webpack那些事儿06 | 东胜</title>
+    <title>直击本质 | 东胜</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="东胜">
     
-    <meta name="description" content="本篇主要讲述用gulp+webpack构建多页应用">
+    <meta name="description" content="读完此书并不能成为一个高手！这句话 是真的">
     
     
     
@@ -87,15 +87,15 @@ var _hmt = _hmt || [];
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/08/25/webpack那些事儿06/" title="webpack那些事儿06" itemprop="url">webpack那些事儿06</a>
+      <a href="/2022/02/24/直击本质/" title="直击本质" itemprop="url">直击本质</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://donglegend.github.io" title="东胜">东胜</a>
     </p>
   <p class="article-time">
-    <time datetime="2016-08-25T08:50:22.000Z" itemprop="datePublished">2016-08-25</time>
-    更新日期:<time datetime="2021-01-08T07:44:59.574Z" itemprop="dateModified">2021-01-08</time>
+    <time datetime="2022-02-24T11:40:19.000Z" itemprop="datePublished">2022-02-24</time>
+    更新日期:<time datetime="2022-02-24T12:57:41.213Z" itemprop="dateModified">2022-02-24</time>
     
   </p>
 </header>
@@ -104,23 +104,76 @@ var _hmt = _hmt || [];
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%BF%E6%8D%A2js%E6%89%93%E5%8C%85%E6%96%B9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">替换js打包方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E4%BC%98%E5%8C%96%EF%BC%88%E5%9F%BA%E4%BA%8Ewebpack%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">项目优化（基于webpack）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-alias-%E8%BF%98%E8%AE%B0%E5%BE%97%E5%B0%8F%E6%9D%8E%E5%AD%90%E7%9A%84%E6%95%85%E4%BA%8B%E5%90%97"><span class="toc-number">2.1.</span> <span class="toc-text">1. alias 还记得小李子的故事吗</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%9A%B4%E9%9C%B2%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-number">2.2.</span> <span class="toc-text">2. 暴露全局变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%8F%90%E5%8F%96%E5%85%AC%E5%85%B1%E6%96%87%E4%BB%B6"><span class="toc-number">2.3.</span> <span class="toc-text">3. 提取公共文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-webpack%E7%BC%96%E8%AF%91%E5%8A%A0cache-%E7%BC%93%E5%AD%98"><span class="toc-number">2.4.</span> <span class="toc-text">4. webpack编译加cache 缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E5%A4%9A%E4%BC%98%E5%8C%96%E7%82%B9%EF%BC%8C%E9%97%AE%E5%BA%A6%E5%A8%98%E3%80%82"><span class="toc-number">2.5.</span> <span class="toc-text">更多优化点，问度娘。</span></a></li></ol></li></ol>
+		
 		</div>
 		
-		<p><b style="color: red;">本篇主要讲述用gulp+webpack构建多页应用</b></p>
+		<p>读完此书并不能成为一个高手！这句话 是真的</p>
 <a id="more"></a>
-<p>折腾到现在，项目还必须要进行，.vue文件必须要加载，也就是webpack必须引入。<br>时间不多了，抛弃上个方案之后，只能牺牲热加载性能，用gulp+webpack构建。</p>
-<p><strong>理论支持：</strong>沿用之前的gulp配置，唯一需要改变的是 之前用browserify打包js替换成webpack打包，想来也好像没什么问题的样子。</p>
-<h2 id="替换js打包方法"><a href="#替换js打包方法" class="headerlink" title="替换js打包方法"></a>替换js打包方法</h2><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">browserify <span class="comment">-----&gt; webpack</span></span><br><span class="line">#增加一个 gulp <span class="keyword">task</span>，没什么可说的</span><br></pre></td></tr></table></figure>
-<p>当然，程序没那么容易跑起来，换了一个打包方式，肯定各种文件资源路径不对等等各种报错，请自行根据具体Error具体解决。</p>
-<h2 id="项目优化（基于webpack）"><a href="#项目优化（基于webpack）" class="headerlink" title="项目优化（基于webpack）"></a>项目优化（基于webpack）</h2><p>程序可以正常启动以后，就要考虑优化的方式了，毕竟我们的初衷并不是仅仅换一个js的打包方式。</p>
-<h3 id="1-alias-还记得小李子的故事吗"><a href="#1-alias-还记得小李子的故事吗" class="headerlink" title="1. alias 还记得小李子的故事吗"></a>1. <a target="_blank" rel="noopener" href="http://donglegend.com/2016/08/25/webpack%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF04/#webpack-base-conf-js">alias 还记得小李子的故事吗</a></h3><h3 id="2-暴露全局变量"><a href="#2-暴露全局变量" class="headerlink" title="2. 暴露全局变量"></a>2. 暴露全局变量</h3><p> 暴露常用插件到全局共用，比如vue,jquery等等，<a target="_blank" rel="noopener" href="http://donglegend.com/2016/08/25/webpack%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF04/#webpack-base-conf-js">具体方式点参考之前讲述</a></p>
-<h3 id="3-提取公共文件"><a href="#3-提取公共文件" class="headerlink" title="3. 提取公共文件"></a>3. 提取公共文件</h3><p><a target="_blank" rel="noopener" href="http://webpack.github.io/docs/list-of-plugins.html#commonschunkplugin">调用webpack内置插件功能 点击查看</a></p>
-<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">new</span> <span class="selector-tag">webpack</span><span class="selector-class">.optimize</span><span class="selector-class">.CommonsChunkPlugin</span>(&#123;</span><br><span class="line">    <span class="attribute">name</span>: <span class="string">&quot;common&quot;</span>,</span><br><span class="line">    <span class="attribute">filename</span>: <span class="string">&quot;js/common.js&quot;</span>,</span><br><span class="line">    <span class="attribute">chunks</span>: [<span class="string">&#x27;vue&#x27;</span>, &#x27;jquery]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<h3 id="4-webpack编译加cache-缓存"><a href="#4-webpack编译加cache-缓存" class="headerlink" title="4. webpack编译加cache 缓存"></a>4. webpack编译加cache 缓存</h3><ul>
-<li>webpack 开启 cache: true</li>
-<li>babel转码开启cacheDirectory: true (此点极其重要，速度提升几倍)<h3 id="更多优化点，问度娘。"><a href="#更多优化点，问度娘。" class="headerlink" title="更多优化点，问度娘。"></a>更多优化点，问度娘。</h3></li>
+
+<p>《直击本质》作者 艾菲，总共11.4万字，第一遍 用时五个多小时阅读完毕，第二遍回顾 用时1个小时。</p>
+<p>在微信读书app上打开此书的，我也不知道怎么加入书架，看评价好评如潮。</p>
+<p>初读第一遍开头，觉得很辣鸡，真的很辣鸡，作者文笔功底不太行，思想深度好像也欠缺点，开头章节题目起的又是很讨厌的那种鸡汤成功学似的。</p>
+<p>例举几个看看：</p>
+<ul>
+<li>只有思考思考的方法，才能收获指数级成长的人生</li>
+<li>看透三个本质，可抵十年奋斗</li>
+<li>你追求的是方法，高手思考的是逻辑</li>
 </ul>
+<p>还好后面趋于正常。</p>
+<p>看的出来，作者已经挺努力了，确实像写点东西，可能自身也处于学习知识的阶段，也没有很好掌握底层逻辑，所以写出来就像在 写名句摘录 一样。整本书基本上都是 聚集各个名人语录案例，是存在几个自身的例子，但是说服力明显不太够。</p>
+<p>但是，正如作者在书中引用 亚里士多德的话语：“一方面，没有人能完全地达到真理；另一方面，没有人的努力是错误的。”。作者可能已经 悟到很多了，也努力做到他认为的最好了。<br>目前我没有特别深的收获，或许还是境界不到罢了。</p>
+<p>作者写完上面那句话，又来了一句：“我想再次表达我写作的初衷：是什么曾经拯救过你，你最好就试着用它来拯救这个世界”。这句话，我隐约有点懂了，作者肯定是被她写在书本里的某些东西深深改变过，才能有此感悟。<br>读到这里，我想到了《无人知晓》第五期，就是 对话简七 的那一期里面讲的按个故事：</p>
+<blockquote>
+<p>海水退潮后，大量的鱼被搁浅在海滩上。一个小男孩见状，开始拾起鱼一条一条地往海里扔。一个路过的人不理解：“这么多鱼，你救得过来吗？”小男孩一边救鱼一边回答说：“这条鱼在乎！”随即又将一条鱼扔回了大海！</p>
+</blockquote>
+<p>很有感觉是吧，弱水三千，一瓢足矣！</p>
+<p>所以，任何一本书呢，都有属于它的读者，每个读者可能都会get到某一个点。</p>
+<p>下面总结一下，我的收获。</p>
+<p>首先，学到了很多概念名词：</p>
+<ul>
+<li>ego 原来是 自我 的意思，之前看到过 ego 太强，就没理解.</li>
+<li>回路 增强回路 &amp; 调节回路</li>
+<li>使命，就是 公司为什么而存在</li>
+<li>愿景，就是 公司要去往哪里，发展成什么样 （ps: 之前就搞不明白 使命 和 愿景的区别）</li>
+<li>价值观，就是 做事的方法标准和共识</li>
+<li>最小阻力之路</li>
+<li>零基思维</li>
+</ul>
+<p>然后，发现了一些人物关系，原来 作者 是 刘润 的 学生，这就能理解 上半章节解释“本质思考”的时候，为什么出现很多 刘润的方法论(what, why, how)；还引用了 张潇雨 的案例，我知道 张潇雨 是和 刘润有关系的，恰好我也了解 刘润 和 张潇雨，原来他们都认识。</p>
+<p>到了这里，前面书已经读了两遍了，这里又在回顾的时候，能感知到自己能get到的东西好像多了不少。</p>
+<p>总结一下本书目录章节：</p>
+<ul>
+<li><p>什么是本质思考 What</p>
+</li>
+<li><p>为什么要进行本质思考 Why</p>
+</li>
+<li><p>怎么进行本质思考 How</p>
+</li>
+<li><p>迁移思考</p>
+</li>
+<li><p>升维思考</p>
+<ol>
+<li>层级思考</li>
+<li>时间轴思考</li>
+<li>视觉思考</li>
+<li>选择思考</li>
+<li>无边界思考</li>
+<li>塑造者思考</li>
+</ol>
+</li>
+<li><p>逆向思考</p>
+<ol>
+<li>成功-失败模型</li>
+<li>变化-不变模型</li>
+<li>加法-减法模型</li>
+<li>幸福-痛苦模型</li>
+<li>组合-反向模型</li>
+</ol>
+</li>
+</ul>
+<p>现在仔细想想，确实都是 总结出来的一些方法论，况且很多事情的因果关系都是 从事后推断出来的，后视镜里看世界，多少有点幸存者效应，不一定能模仿，但或许总是有点益处的。</p>
+<p>我自身感受比较深刻的是 层级思考法 和 塑造者思考法，给出了一种 打破当下局面 和 环境的 新思路，这就已经是收获了，读这本书就已经很值得了。</p>
+<p>好了，还是那句话“书要读万卷，路要行万里”。<br>走在当下的每一步可能并不会让我们走到终点，只有走了很远，蓦然回首，才能发现，我们已经走了那么远！</p>
   
     </div>
     
@@ -154,20 +207,20 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/webpack/">webpack</a>
+  <span></span> <a href="/tags/写作/">写作</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  <a class="article-category-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://donglegend.github.io/2016/08/25/webpack%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF06/" data-title="webpack那些事儿06 | 东胜" data-tsina="" class="share clearfix">
+  <div data-url="http://donglegend.github.io/2022/02/24/%E7%9B%B4%E5%87%BB%E6%9C%AC%E8%B4%A8/" data-title="直击本质 | 东胜" data-tsina="" class="share clearfix">
   </div>
 
 </div>
@@ -176,19 +229,11 @@ var _hmt = _hmt || [];
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2016/08/29/再见北岳/" title="再见北岳">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  再见北岳</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2016/08/25/webpack那些事儿05/"  title="webpack那些事儿05">
+<a href="/2022/02/14/克莱因壶/"  title="克莱因壶">
  <strong>NEXT:</strong><br/> 
- <span>webpack那些事儿05
+ <span>克莱因壶
 </span>
 </a>
 </div>
@@ -205,7 +250,7 @@ var _hmt = _hmt || [];
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%BF%E6%8D%A2js%E6%89%93%E5%8C%85%E6%96%B9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">替换js打包方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E4%BC%98%E5%8C%96%EF%BC%88%E5%9F%BA%E4%BA%8Ewebpack%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">项目优化（基于webpack）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-alias-%E8%BF%98%E8%AE%B0%E5%BE%97%E5%B0%8F%E6%9D%8E%E5%AD%90%E7%9A%84%E6%95%85%E4%BA%8B%E5%90%97"><span class="toc-number">2.1.</span> <span class="toc-text">1. alias 还记得小李子的故事吗</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%9A%B4%E9%9C%B2%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-number">2.2.</span> <span class="toc-text">2. 暴露全局变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%8F%90%E5%8F%96%E5%85%AC%E5%85%B1%E6%96%87%E4%BB%B6"><span class="toc-number">2.3.</span> <span class="toc-text">3. 提取公共文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-webpack%E7%BC%96%E8%AF%91%E5%8A%A0cache-%E7%BC%93%E5%AD%98"><span class="toc-number">2.4.</span> <span class="toc-text">4. webpack编译加cache 缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E5%A4%9A%E4%BC%98%E5%8C%96%E7%82%B9%EF%BC%8C%E9%97%AE%E5%BA%A6%E5%A8%98%E3%80%82"><span class="toc-number">2.5.</span> <span class="toc-text">更多优化点，问度娘。</span></a></li></ol></li></ol>
+  
   </div>
 
 <div id="asidepart">
