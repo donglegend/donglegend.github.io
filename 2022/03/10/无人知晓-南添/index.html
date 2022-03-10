@@ -5,12 +5,12 @@
   <meta charset="UTF-8">
   <meta name="baidu-site-verification" content="uFV75F3ynA" />
   
-    <title>gulp常用插件 | 东胜</title>
+    <title>无人知晓-南添 | 东胜</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="东胜">
     
-    <meta name="description" content="本人就职于一家互联网小公司，根据自己的项目纪录一下常用的gulp插件，项目不是很大！">
+    <meta name="description" content="把手弄脏，走进真实世界！">
     
     
     
@@ -87,15 +87,15 @@ var _hmt = _hmt || [];
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/08/06/gulp常用插件/" title="gulp常用插件" itemprop="url">gulp常用插件</a>
+      <a href="/2022/03/10/无人知晓-南添/" title="无人知晓-南添" itemprop="url">无人知晓-南添</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://donglegend.github.io" title="东胜">东胜</a>
     </p>
   <p class="article-time">
-    <time datetime="2016-08-06T05:34:18.000Z" itemprop="datePublished">2016-08-06</time>
-    更新日期:<time datetime="2021-01-08T07:44:59.561Z" itemprop="dateModified">2021-01-08</time>
+    <time datetime="2022-03-10T11:45:09.000Z" itemprop="datePublished">2022-03-10</time>
+    更新日期:<time datetime="2022-03-10T14:32:22.796Z" itemprop="dateModified">2022-03-10</time>
     
   </p>
 </header>
@@ -104,27 +104,35 @@ var _hmt = _hmt || [];
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#gulp-load-plugins"><span class="toc-number">1.</span> <span class="toc-text">gulp-load-plugins</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#yargs"><span class="toc-number">2.</span> <span class="toc-text">yargs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#del"><span class="toc-number">3.</span> <span class="toc-text">del</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gulp-filter"><span class="toc-number">4.</span> <span class="toc-text">gulp-filter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gulp-header"><span class="toc-number">5.</span> <span class="toc-text">gulp-header</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#run-sequence"><span class="toc-number">6.</span> <span class="toc-text">run-sequence</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gulp-uglify"><span class="toc-number">7.</span> <span class="toc-text">gulp-uglify</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gulp-minify-html"><span class="toc-number">8.</span> <span class="toc-text">gulp-minify-html</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#npm-check-updates"><span class="toc-number">9.</span> <span class="toc-text">npm-check-updates</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%85%E5%AE%8C%E5%96%84%E2%80%A6%E2%80%A6"><span class="toc-number">10.</span> <span class="toc-text">待完善……</span></a></li></ol>
+		
 		</div>
 		
-		<p>本人就职于一家互联网小公司，根据自己的项目纪录一下常用的gulp插件，项目不是很大！</p>
+		<p>把手弄脏，走进真实世界！</p>
 <a id="more"></a>
 
-<h2 id="gulp-load-plugins"><a href="#gulp-load-plugins" class="headerlink" title="gulp-load-plugins"></a><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-load-plugins" title="gulp-load-plugins">gulp-load-plugins</a></h2><p> 此插件的功能主要搭配 <strong>package.json</strong> 文件中声明的依赖使用。 自动加载 <strong>package.json</strong> 中声明的gulp-或gulp.开头的插件</p>
-<p>不必这样：</p>
-<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="keyword">require</span>(<span class="string">&#x27;gulp&#x27;</span>),</span><br><span class="line">    jshint = <span class="keyword">require</span>(<span class="string">&#x27;gulp-jshint&#x27;</span>),</span><br><span class="line">    uglify = <span class="keyword">require</span>(<span class="string">&#x27;gulp-uglify&#x27;</span>),</span><br><span class="line">    <span class="keyword">concat</span> = <span class="keyword">require</span>(<span class="string">&#x27;gulp-concat&#x27;</span>);</span><br></pre></td></tr></table></figure>
-<p>只需这样：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>),</span><br><span class="line">    $ = <span class="built_in">require</span>(<span class="string">&#x27;gulp-load-plugins&#x27;</span>)();</span><br><span class="line">gulp.task(<span class="string">&#x27;js&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> gulp.src(<span class="string">&#x27;js/*.js&#x27;</span>)</span><br><span class="line">      .pipe($.jshint())</span><br><span class="line">      .pipe($.uglify())</span><br><span class="line">      .pipe($.concat(<span class="string">&#x27;main.js&#x27;</span>))</span><br><span class="line">      .pipe(gulp.dest(<span class="string">&#x27;build&#x27;</span>));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<h2 id="yargs"><a href="#yargs" class="headerlink" title="yargs"></a><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/yargs" title="yargs">yargs</a></h2><p>Node中处理命令行参数，把参数序列化成 json 对象</p>
-<h2 id="del"><a href="#del" class="headerlink" title="del"></a><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/del" title="del">del</a></h2><p>自行看文档，不解释</p>
-<h2 id="gulp-filter"><a href="#gulp-filter" class="headerlink" title="gulp-filter"></a><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-filter" title="gulp-filter">gulp-filter</a></h2><p>筛选匹配到的文件，类似于中间件，自行看文档</p>
-<h2 id="gulp-header"><a href="#gulp-header" class="headerlink" title="gulp-header"></a><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-header" title="gulp-header">gulp-header</a></h2><p>这个非常有用，可以在文件中添加头部注释，包含任意想要的信息，通常就是文本更新时间、作者、描述、版本号、license等，比如：</p>
-<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getHeader</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> template = [<span class="string">&#x27;/**&#x27;</span>,</span><br><span class="line">    	<span class="string">&#x27; * time: &lt;%= time%&gt;&#x27;</span>,</span><br><span class="line">    	<span class="string">&#x27; * site: &lt;%= site%&gt;&#x27;</span>,</span><br><span class="line">    	<span class="string">&#x27; * contact: &lt;%= blog%&gt;&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27; */&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;&#x27;</span></span><br><span class="line">    ].join(<span class="string">&#x27;\n&#x27;</span>);</span><br><span class="line">    <span class="keyword">return</span> $.header(template, &#123;</span><br><span class="line">        time: <span class="keyword">new</span> <span class="built_in">Date</span>(),</span><br><span class="line">        site: <span class="string">&#x27;http://www.yeezan.com/&#x27;</span>,</span><br><span class="line">        blog: <span class="string">&#x27;http://donglegend.com/&#x27;</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">&quot;uglify&quot;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	gulp.src([<span class="string">&quot;./js/build/*.js&quot;</span>])</span><br><span class="line">		.pipe($.uglify(&#123;</span><br><span class="line">			compress: &#123;</span><br><span class="line">				drop_console: <span class="literal">true</span>,</span><br><span class="line">				unused: <span class="literal">true</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;))</span><br><span class="line">		.pipe(getHeader())</span><br><span class="line">		.pipe(gulp.dest(<span class="string">&quot;./js/build/min/&quot;</span>));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<h2 id="run-sequence"><a href="#run-sequence" class="headerlink" title="run-sequence"></a><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/run-sequence" title="run-sequence">run-sequence</a></h2><p>同步按顺序执行gulp的task任务，亲测，类似的插件都是坑，不好用(可能我是用方式不对。。。),望观看<a target="_blank" rel="noopener" href="http://www.gulpjs.com.cn/docs/api/">官网api http://www.gulpjs.com.cn/docs/api/</a><br>解决同步执行方法，用Makefile文件，执行命令<br>demo:</p>
-<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">build:</span></span><br><span class="line"><span class="keyword">	</span>gulp clean</span><br><span class="line">	gulp <span class="keyword">browserify</span></span><br><span class="line"><span class="keyword">	</span>gulp uglify</span><br></pre></td></tr></table></figure>
-<h2 id="gulp-uglify"><a href="#gulp-uglify" class="headerlink" title="gulp-uglify"></a><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-uglify" title="gulp-uglify">gulp-uglify</a></h2><h2 id="gulp-minify-html"><a href="#gulp-minify-html" class="headerlink" title="gulp-minify-html"></a><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-minify-html" title="gulp-minify-html">gulp-minify-html</a></h2><p>不解释</p>
-<h2 id="npm-check-updates"><a href="#npm-check-updates" class="headerlink" title="npm-check-updates"></a><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/npm-check-updates">npm-check-updates</a></h2><p>这款插件棒棒哒，主要用来更新package.json的依赖，时间长了，node会升级，项目依赖版本也会升级，用这个是个很不错的主意。</p>
-<h2 id="待完善……"><a href="#待完善……" class="headerlink" title="待完善……"></a>待完善……</h2>  
+<p>《无人知晓》第一期 南添老师，在这里第一次认识南添，是一位大师级的人物！</p>
+<p>南添老师的人生哲学：“把手弄脏，规模效应！”。</p>
+<p>下面看一下南添老师对 把手弄脏 的解读：</p>
+<blockquote>
+<p>通常来说，很多人把「把手弄脏」视作一种成功的路径。我们需要先降低预期、了解事物本身，有切实的体验等等。但我想说的是，虽然听起来「把手弄脏」这句话似乎是在说我们本来不该弄脏的，我们必须弄脏一定是为了什么。但真正来讲，我认为我们在这个世界上本来就不是干净的，我们本该承受这些，或者说我们本来就是这个环境的一部分。所以，我说的把手弄脏指的是，这不是个动机问题，而是说我们本来就应该把东西捡起来。在青训营的现阶段，我只能跟大家讲把手弄脏，但我更希望很多人能理解的是「你本来就不该在乎你的手脏不脏」。</p>
+</blockquote>
+<p>我理解 南添老师要表达的意思是 最好自己亲身去经历，去感受，去实践，下场去看看，不能只坐在那里想，我们本来就是要做事的。很多知识理论，甚至很多鸡汤，真的只有经历过，实践过，才能领悟，不然感同身受很难，你必须有过相似的体验才能悟到，如同 夏虫不可语冰一个道理。</p>
+<p>下场实践，绝大多数情况能激发更多的感悟和思考，常常会有意外的惊喜。</p>
+<p>南添老师同样是在身体力行，比如讲课，一个月一次，一次9个小时。做到这点真的很不容易，而且南添老师不怕自己讲错，不怕打脸，也从不藏私，知无不言。</p>
+<p>知无不言的对立面就是 藏私，敝帚自珍，然而这是毫无意义。你把自己辛苦总结出来的经验真理讲给别人听，会有什么结果？<br>第一假如你讲的是对的，然而别人可能听不懂你在讲什么，这种情况非常常见，因为听众可能没有对应的知识背景，就无法解读你的经验真理。第二，有懂你的人或者比你更牛逼，好，恭喜，交到了好朋友，找到了导师，又能更进一步了。<br>你在二层楼，上面还有三层楼，四层楼…</p>
+<p>看南添老师自己讲课的感受:</p>
+<blockquote>
+<p>第一次讲完 9 小时的大课后，我发现受益最大的是我自己。大多数人成年之后一年都不会反思一次，而当你定期完整地思考和整理一遍大脑当中与从事事业相关的所有认知框架时，就能让这些认知不再是一个个碎片，而是形成一个复杂的网络。这需要有一个注意力和体力都高度集中的场景。讲大课对我来说，就是一个以赛代练的过程。如果说我是个运动员，那我相当于在体力允许的情况下，每个月踢一场世界杯决赛。在这种情况下，毫无疑问对于运动员提升竞技水平是有巨大帮助的。后来我才意识到，之前那么多年做投资，有很多线索早就有了，我为什么一直点不亮我自己，正是因为我缺乏这种巨大的场景。</p>
+</blockquote>
+<p>讲给别人听，收益最大的却是自己。这句话真的是真理！不信，自己可以去试试，把手弄脏，体验一下。</p>
+<p>关于规模效应，我感受不是特别深刻，可能没有相关经验。</p>
+<blockquote>
+<p>「规模效应」的意思，就是说如果事情要合并起来一起做，要不然是它有更大的产出、更大的威力，更大的效果，要不然就是大家都能省点劲、省点材料、节约点时间。这个的原理是一个除法，上面「产出」，下面是「投入」，有规模效应的事情，就是大家都参与进这个除法公式之后，分母增长得不快，分子增长得快。所以「规模效应」一定表现为人类社会要不然就更多产出，要不然就更多节约。</p>
+</blockquote>
+<p>最后，还是用孟岩老师的话总结一下：</p>
+<p>这个世界还是「因为相信，所以看见」的人能活得更好一些，不是因为他们更赚钱更成功，而是因为很多时候他们看中的是内在记分牌，看中的是他追寻的道路、想实现的人生和自我。</p>
+<p>把手弄脏，要把手套摘下去，要真实地走到这个世界里面。不要把自己太当回事，要真实地去做事情，去帮助别人，去做一些东西，去推动着这个世界往前去发展。</p>
+  
     </div>
     
         <! -- 添加捐赠图标 -->
@@ -157,20 +165,20 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/gulp/">gulp</a>
+  <span></span> <a href="/tags/写作/">写作</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  <a class="article-category-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://donglegend.github.io/2016/08/06/gulp%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6/" data-title="gulp常用插件 | 东胜" data-tsina="" class="share clearfix">
+  <div data-url="http://donglegend.github.io/2022/03/10/%E6%97%A0%E4%BA%BA%E7%9F%A5%E6%99%93-%E5%8D%97%E6%B7%BB/" data-title="无人知晓-南添 | 东胜" data-tsina="" class="share clearfix">
   </div>
 
 </div>
@@ -180,18 +188,18 @@ var _hmt = _hmt || [];
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2016/08/23/hexo问题篇/" title="hexo问题篇(偶尔抽抽疯)">
+ <a href="/2022/03/10/无人知晓-陈嘉禾/" title="无人知晓-陈嘉禾">
   <strong>PREVIOUS:</strong><br/>
   <span>
-  hexo问题篇(偶尔抽抽疯)</span>
+  无人知晓-陈嘉禾</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2016/08/06/阳光只是阳光，彩虹不是彩虹/"  title="阳光只是阳光，彩虹不是彩虹">
+<a href="/2022/03/04/项目数据状态管理思考/"  title="项目数据状态管理思考">
  <strong>NEXT:</strong><br/> 
- <span>阳光只是阳光，彩虹不是彩虹
+ <span>项目数据状态管理思考
 </span>
 </a>
 </div>
@@ -208,7 +216,7 @@ var _hmt = _hmt || [];
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#gulp-load-plugins"><span class="toc-number">1.</span> <span class="toc-text">gulp-load-plugins</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#yargs"><span class="toc-number">2.</span> <span class="toc-text">yargs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#del"><span class="toc-number">3.</span> <span class="toc-text">del</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gulp-filter"><span class="toc-number">4.</span> <span class="toc-text">gulp-filter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gulp-header"><span class="toc-number">5.</span> <span class="toc-text">gulp-header</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#run-sequence"><span class="toc-number">6.</span> <span class="toc-text">run-sequence</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gulp-uglify"><span class="toc-number">7.</span> <span class="toc-text">gulp-uglify</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gulp-minify-html"><span class="toc-number">8.</span> <span class="toc-text">gulp-minify-html</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#npm-check-updates"><span class="toc-number">9.</span> <span class="toc-text">npm-check-updates</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%85%E5%AE%8C%E5%96%84%E2%80%A6%E2%80%A6"><span class="toc-number">10.</span> <span class="toc-text">待完善……</span></a></li></ol>
+  
   </div>
 
 <div id="asidepart">
