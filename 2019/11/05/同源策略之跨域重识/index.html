@@ -1,0 +1,570 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="baidu-site-verification" content="uFV75F3ynA" />
+  
+    <title>同源策略之跨域重识 | donglegend</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="donglegend">
+    
+    <meta name="description" content="老调重弹，读书百遍!">
+    
+    
+    
+    
+    <link rel="alternate" href="/atom.xml" title="donglegend" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e5ceaae97fa66c463949d78385220bd4";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="donglegend" title="donglegend"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="donglegend">donglegend</a></h1>
+				<h2 class="blog-motto">阳光总在风雨后</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">文章</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:donglegend.github.io">
+					</form>
+					
+					</li>
+					
+
+
+
+				</ul>
+			</nav>		
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/11/05/同源策略之跨域重识/" title="同源策略之跨域重识" itemprop="url">同源策略之跨域重识</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://donglegend.github.io" title="donglegend">donglegend</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2019-11-05T08:44:57.000Z" itemprop="datePublished">2019-11-05</time>
+    更新日期:<time datetime="2024-04-24T04:26:29.149Z" itemprop="dateModified">2024-04-24</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">一. 概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%90%AB%E4%B9%89%E5%85%B3%E9%94%AE%E8%AF%8D"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 含义关键词</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E7%9B%AE%E7%9A%84"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E9%99%90%E5%88%B6%E8%8C%83%E5%9B%B4"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 限制范围</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-Cookie"><span class="toc-number">2.</span> <span class="toc-text">二. Cookie</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-iframe-%E5%AD%90%E7%AA%97%E5%8F%A3"><span class="toc-number">3.</span> <span class="toc-text">三. iframe 子窗口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E7%89%87%E6%AE%B5%E6%A0%87%E8%AF%86%E7%AC%A6"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 片段标识符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-window-name"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 window.name</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-window-postMessage"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 window.postMessage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-LocalStorage"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 LocalStorage</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-AJAX"><span class="toc-number">4.</span> <span class="toc-text">四. AJAX</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-JSONP"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 JSONP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-CORS"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 CORS</span></a></li></ol></li></ol>
+		</div>
+		
+		<p>老调重弹，读书百遍!</p>
+<a id="more"></a>
+
+<p>这只是是笔记</p>
+<h2 id="一-概念"><a href="#一-概念" class="headerlink" title="一. 概念"></a>一. 概念</h2><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/Security/Same-origin_policy">浏览器的同源策略</a><br>同源政策由 Netscape 公司引入浏览器。目前，所有浏览器都实行这个政策。</p>
+<h3 id="1-1-含义关键词"><a href="#1-1-含义关键词" class="headerlink" title="1.1 含义关键词"></a>1.1 含义关键词</h3><ul>
+<li>域名</li>
+<li>协议</li>
+<li>端口</li>
+</ul>
+<h3 id="1-2-目的"><a href="#1-2-目的" class="headerlink" title="1.2 目的"></a>1.2 目的</h3><p>为了保证用户信息的安全，防止恶意的网站窃取数据。(大家熟悉的 限制跨域 cookie)最初的目的确实是为了限制 跨站访问 cookie</p>
+<h3 id="1-3-限制范围"><a href="#1-3-限制范围" class="headerlink" title="1.3 限制范围"></a>1.3 限制范围</h3><p>随着互联网的发展，”同源政策”越来越严格。目前，如果非同源，共有三种行为受到限制。</p>
+<ul>
+<li>Cookie、LocalStorage 和 IndexDB 无法读取。</li>
+<li>DOM 无法获得。</li>
+<li>AJAX 请求不能发送。</li>
+</ul>
+<h2 id="二-Cookie"><a href="#二-Cookie" class="headerlink" title="二. Cookie"></a>二. Cookie</h2><p>Cookie 是服务器写入浏览器的一小段信息，只有同源的网页才能共享。<br>但是两个网页一级域名相同，只是二级域名不同，浏览器允许通过设置 <b>document.domain</b> 共享 Cookie。<br>比如： <a target="_blank" rel="noopener" href="http://a.ds.com/">http://a.ds.com</a> 和 <a target="_blank" rel="noopener" href="http://b.ds.com,/">http://b.ds.com，</a> 那么只要设置相同的 document.domain.两个网页就可以共享 Cookie<br><i>但是注意这种方法 只能对 Cookie 和 iframe 窗口的通信有效</i>.</p>
+<h2 id="三-iframe-子窗口"><a href="#三-iframe-子窗口" class="headerlink" title="三. iframe 子窗口"></a>三. iframe 子窗口</h2><p>如果两个网页不同源，就无法拿到对方的 DOM。典型的例子是 iframe 窗口和 window.open 方法打开的窗口，它们与父窗口无法通信。</p>
+<p>如果两个窗口一级域名相同，只是二级域名不同，那么设置 document.domain 属性，就可以规避同源政策，拿到 DOM。</p>
+<p>对于完全不同源的网站，目前有三种方法，可以解决跨域窗口的通信问题。</p>
+<ul>
+<li>片段标识符（fragment identifier）即 hash</li>
+<li>window.name</li>
+<li>跨文档通信 API（Cross-document messaging）</li>
+</ul>
+<h3 id="3-1-片段标识符"><a href="#3-1-片段标识符" class="headerlink" title="3.1 片段标识符"></a>3.1 片段标识符</h3><p>片段标识符（fragment identifier）指的是，URL 的#号后面的部分，比如<a target="_blank" rel="noopener" href="http://example.com/x.html#fragment%E7%9A%84#fragment%E3%80%82%E5%A6%82%E6%9E%9C%E5%8F%AA%E6%98%AF%E6%94%B9%E5%8F%98%E7%89%87%E6%AE%B5%E6%A0%87%E8%AF%86%E7%AC%A6%EF%BC%8C%E9%A1%B5%E9%9D%A2%E4%B8%8D%E4%BC%9A%E9%87%8D%E6%96%B0%E5%88%B7%E6%96%B0%E3%80%82">http://example.com/x.html#fragment的#fragment。如果只是改变片段标识符，页面不会重新刷新。</a></p>
+<p>父窗口可以把信息，写入子窗口的片段标识符。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> src = originURL + <span class="string">&#x27;#&#x27;</span> + data;</span><br><span class="line"><span class="built_in">document</span>.getElementById(<span class="string">&#x27;myIFrame&#x27;</span>).src = src;</span><br></pre></td></tr></table></figure>
+<p>子窗口通过监听 hashchange 事件得到通知。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.onhashchange = checkMessage;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">checkMessage</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> message = <span class="built_in">window</span>.location.hash;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>反之亦然。</p>
+<h3 id="3-2-window-name"><a href="#3-2-window-name" class="headerlink" title="3.2 window.name"></a>3.2 window.name</h3><p>浏览器窗口有 window.name 属性。这个属性的最大特点是，无论是否同源，只要在同一个窗口里，前一个网页设置了这个属性，后一个网页可以读取它。</p>
+<p>父窗口先打开一个子窗口，载入一个不同源的网页，该网页将信息写入 window.name 属性。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">window.name</span> = data<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>接着，子窗口跳回一个与主窗口同域的网址，然后主窗口就可以读取子窗口的 window.name 了。</p>
+<p>缺点需要 在设置 name 属性之后，更新 url，影响页面性能，操作繁琐。</p>
+<h3 id="3-3-window-postMessage"><a href="#3-3-window-postMessage" class="headerlink" title="3.3 window.postMessage"></a>3.3 window.postMessage</h3><p>这个方法才是合理的解决方案，以上那些都是钻孔取巧。<br>HTML5 为了解决这个问题，引入了一个全新的 API：跨文档通信 API（Cross-document messaging）。<br>这个 API 为 window 对象新增了一个 window.postMessage 方法，允许跨窗口通信，不论这两个窗口是否同源。</p>
+<p>举例来说，父窗口<a target="_blank" rel="noopener" href="http://aaa.com向子窗口http//bbb.com%E5%8F%91%E6%B6%88%E6%81%AF%EF%BC%8C%E8%B0%83%E7%94%A8postMessage%E6%96%B9%E6%B3%95%E5%B0%B1%E5%8F%AF%E4%BB%A5%E4%BA%86%E3%80%82">http://aaa.com向子窗口http://bbb.com发消息，调用postMessage方法就可以了。</a></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> popup = <span class="built_in">window</span>.open(<span class="string">&#x27;http://bbb.com&#x27;</span>, <span class="string">&#x27;title&#x27;</span>);</span><br><span class="line">popup.postMessage(<span class="string">&#x27;Hello World!&#x27;</span>, <span class="string">&#x27;http://bbb.com&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<p>然后监听消息使用 message 事件:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">&#x27;message&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(e);</span><br><span class="line">&#125;,<span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="3-4-LocalStorage"><a href="#3-4-LocalStorage" class="headerlink" title="3.4 LocalStorage"></a>3.4 LocalStorage</h3><p>同理，上面讲过的 postMessage 也可以用来实现 localstorage 传递的桥梁.<br>比如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.onmessage = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (e.origin !== <span class="string">&#x27;http://bbb.com&#x27;</span>) <span class="keyword">return</span>;</span><br><span class="line">  <span class="keyword">var</span> payload = <span class="built_in">JSON</span>.parse(e.data);</span><br><span class="line">  <span class="keyword">switch</span> (payload.method) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;set&#x27;</span>:</span><br><span class="line">      <span class="built_in">localStorage</span>.setItem(payload.key, <span class="built_in">JSON</span>.stringify(payload.data));</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;get&#x27;</span>:</span><br><span class="line">      <span class="keyword">var</span> parent = <span class="built_in">window</span>.parent;</span><br><span class="line">      <span class="keyword">var</span> data = <span class="built_in">localStorage</span>.getItem(payload.key);</span><br><span class="line">      parent.postMessage(data, <span class="string">&#x27;http://aaa.com&#x27;</span>);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;remove&#x27;</span>:</span><br><span class="line">      <span class="built_in">localStorage</span>.removeItem(payload.key);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="四-AJAX"><a href="#四-AJAX" class="headerlink" title="四. AJAX"></a>四. AJAX</h2><p>同源政策规定，AJAX 请求只能发给同源的网址，否则就报错。</p>
+<p>除了架设服务器代理（浏览器请求同源服务器，再由后者请求外部服务），还有以下方法规避这个限制。</p>
+<ul>
+<li>JSONP</li>
+<li>CORS</li>
+</ul>
+<h3 id="4-1-JSONP"><a href="#4-1-JSONP" class="headerlink" title="4.1 JSONP"></a>4.1 JSONP</h3><p>JSONP 是服务器与客户端跨源通信的常用方法。最大特点就是简单适用，老式浏览器全部支持，服务器改造非常小。</p>
+<p>它的基本思想是，网页通过添加一个 script 元素，向服务器请求 JSON 数据，这种做法不受同源政策限制；服务器收到请求后，将数据放在一个指定名字的回调函数里传回来。</p>
+<p>首先，网页动态插入 script 元素，由它向跨源网址发出请求。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addScriptTag</span>(<span class="params">src</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> script = <span class="built_in">document</span>.createElement(<span class="string">&#x27;script&#x27;</span>);</span><br><span class="line">  script.setAttribute(<span class="string">&quot;type&quot;</span>,<span class="string">&quot;text/javascript&quot;</span>);</span><br><span class="line">  script.src = src;</span><br><span class="line">  <span class="built_in">document</span>.body.appendChild(script);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  addScriptTag(<span class="string">&#x27;http://example.com/ip?callback=foo&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;Your public IP address is: &#x27;</span> + data.ip);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>服务器收到这个请求以后，会将数据放在回调函数的参数位置返回。</p>
+<figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">foo</span>(&#123;</span></span><br><span class="line"><span class="function">  <span class="string">&quot;ip&quot;</span>: <span class="string">&quot;8.8.8.8&quot;</span></span></span><br><span class="line"><span class="function">&#125;);</span></span><br></pre></td></tr></table></figure>
+<h3 id="4-2-CORS"><a href="#4-2-CORS" class="headerlink" title="4.2 CORS"></a>4.2 CORS</h3><p>CORS 是跨源资源分享（Cross-Origin Resource Sharing）的缩写。它是 W3C 标准，是跨源 AJAX 请求的根本解决方法。相比 JSONP 只能发 GET 请求，CORS 允许任何类型的请求</p>
+<p><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html">原文出处</a></p>
+  
+    </div>
+    
+        <! -- 添加捐赠图标 -->
+<div class="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+            &uarr;
+            <br>
+            欣赏此文？求鼓励，求支持！
+        </span>
+        <br>
+    </div>
+    <div id="donate_guide" class="donate_bar center hidden">
+        <!-- 支付宝打赏图案 -->
+        <img src="/img/zhifubao.jpg" alt="支付宝打赏">
+        <!-- 微信打赏图案 -->
+        <img src="/img/wechat.jpg" alt="微信打赏">
+    </div>
+    <script type="text/javascript">
+        document.getElementById('btn_donate').onclick = function () {
+            $('#donate_board').addClass('hidden');
+            $('#donate_guide').removeClass('hidden');
+        }
+    </script>
+</div>
+<! -- 添加捐赠图标 -->
+    
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/cors/">cors</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/javascript/">javascript</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://donglegend.github.io/2019/11/05/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5%E4%B9%8B%E8%B7%A8%E5%9F%9F%E9%87%8D%E8%AF%86/" data-title="同源策略之跨域重识 | donglegend" data-tsina="" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/11/06/跨域资源共享-CORS-详解/" title="跨域资源共享 CORS 详解">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  跨域资源共享 CORS 详解</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/06/11/nginx系列3/"  title="nginx系列3">
+ <strong>NEXT:</strong><br/> 
+ <span>nginx系列3
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comment">
+    
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">一. 概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%90%AB%E4%B9%89%E5%85%B3%E9%94%AE%E8%AF%8D"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 含义关键词</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E7%9B%AE%E7%9A%84"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E9%99%90%E5%88%B6%E8%8C%83%E5%9B%B4"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 限制范围</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-Cookie"><span class="toc-number">2.</span> <span class="toc-text">二. Cookie</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-iframe-%E5%AD%90%E7%AA%97%E5%8F%A3"><span class="toc-number">3.</span> <span class="toc-text">三. iframe 子窗口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E7%89%87%E6%AE%B5%E6%A0%87%E8%AF%86%E7%AC%A6"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 片段标识符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-window-name"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 window.name</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-window-postMessage"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 window.postMessage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-LocalStorage"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 LocalStorage</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-AJAX"><span class="toc-number">4.</span> <span class="toc-text">四. AJAX</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-JSONP"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 JSONP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-CORS"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 CORS</span></a></li></ol></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/css/" title="css">css<sup>1</sup></a></li>
+		
+			<li><a href="/categories/http/" title="http">http<sup>3</sup></a></li>
+		
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>66</sup></a></li>
+		
+			<li><a href="/categories/yapi/" title="yapi">yapi<sup>1</sup></a></li>
+		
+			<li><a href="/categories/动画/" title="动画">动画<sup>3</sup></a></li>
+		
+			<li><a href="/categories/后端/" title="后端">后端<sup>3</sup></a></li>
+		
+			<li><a href="/categories/版本控制/" title="版本控制">版本控制<sup>8</sup></a></li>
+		
+			<li><a href="/categories/随笔/" title="随笔">随笔<sup>59</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/TypeScript/" title="TypeScript">TypeScript<sup>4</sup></a></li>
+		
+			<li><a href="/tags/ajax/" title="ajax">ajax<sup>1</sup></a></li>
+		
+			<li><a href="/tags/axios/" title="axios">axios<sup>1</sup></a></li>
+		
+			<li><a href="/tags/babel/" title="babel">babel<sup>1</sup></a></li>
+		
+			<li><a href="/tags/bower/" title="bower">bower<sup>1</sup></a></li>
+		
+			<li><a href="/tags/cocos/" title="cocos">cocos<sup>1</sup></a></li>
+		
+			<li><a href="/tags/code/" title="code">code<sup>2</sup></a></li>
+		
+			<li><a href="/tags/cors/" title="cors">cors<sup>2</sup></a></li>
+		
+			<li><a href="/tags/font/" title="font">font<sup>1</sup></a></li>
+		
+			<li><a href="/tags/ftp/" title="ftp">ftp<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>8</sup></a></li>
+		
+			<li><a href="/tags/gulp/" title="gulp">gulp<sup>3</sup></a></li>
+		
+			<li><a href="/tags/hash/" title="hash">hash<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>4</sup></a></li>
+		
+			<li><a href="/tags/http/" title="http">http<sup>2</sup></a></li>
+		
+			<li><a href="/tags/javascript/" title="javascript">javascript<sup>2</sup></a></li>
+		
+			<li><a href="/tags/mongodb/" title="mongodb">mongodb<sup>8</sup></a></li>
+		
+			<li><a href="/tags/nginx/" title="nginx">nginx<sup>3</sup></a></li>
+		
+			<li><a href="/tags/node/" title="node">node<sup>1</sup></a></li>
+		
+			<li><a href="/tags/php/" title="php">php<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 菜鸟总是在被虐中长大 <br/>
+			人生路上甜苦和喜忧 愿与你分担所有</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/donglegend?is_all=1" target="_blank" title="weibo"></a>
+		
+		
+		
+		<a href="https://github.com/donglegend" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">The first step is as good as half over. 
+			2024
+		</p>
+		<!-- <p class="copyright">
+			Powered by 
+			<a href="http://hexo.io" target="_blank" title="hexo">hexo</a> 
+			and Theme by 
+			<a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> 
+			© 2024 
+		
+		<a href="http://donglegend.github.io" target="_blank" title="donglegend">donglegend</a>
+		
+		</p> -->
+</div>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?db48d9ce7be510c8086c5439de4ce378";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var elBackTop = $("#backTop");
+  $(window).scroll(function() {
+    var el;
+    el = $(this);
+    if (el.scrollTop() > 300) {
+      return elBackTop.fadeIn();
+    } else {
+      return elBackTop.fadeOut();
+    }
+  });
+  elBackTop.on("click", function() {
+    return $('body,html').animate({
+      scrollTop: 0
+    }, 300);
+  });
+}); 
+</script>
+
+
+  </body>
+</html>
+
+<!-- <a target="_blank" rel="noopener" href="https://github.com/donglegend/"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a> -->
+
+<div id="backTop" style="position: fixed; right: 2rem; bottom: 3rem; width: 40px; height: 40px;background: #4691e2; cursor:pointer; border-radius: 6px; line-height: 40px; text-align:center; color: #fff;">顶部</div>

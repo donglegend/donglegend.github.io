@@ -1,0 +1,547 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="baidu-site-verification" content="uFV75F3ynA" />
+  
+    <title>mongodb概念 | donglegend</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="donglegend">
+    
+    <meta name="description" content="实践之前，还是粗浅的了解一下理论吧。">
+    
+    
+    
+    
+    <link rel="alternate" href="/atom.xml" title="donglegend" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e5ceaae97fa66c463949d78385220bd4";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="donglegend" title="donglegend"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="donglegend">donglegend</a></h1>
+				<h2 class="blog-motto">阳光总在风雨后</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">文章</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:donglegend.github.io">
+					</form>
+					
+					</li>
+					
+
+
+
+				</ul>
+			</nav>		
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/06/30/mongodb概念/" title="mongodb概念" itemprop="url">mongodb概念</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://donglegend.github.io" title="donglegend">donglegend</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2017-06-30T11:12:51.000Z" itemprop="datePublished">2017-06-30</time>
+    更新日期:<time datetime="2024-04-24T04:26:29.134Z" itemprop="dateModified">2024-04-24</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.</span> <span class="toc-text">数据库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E5%90%88"><span class="toc-number">2.</span> <span class="toc-text">集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%A1%A3"><span class="toc-number">3.</span> <span class="toc-text">文档</span></a></li></ol>
+		</div>
+		
+		<p>实践之前，还是粗浅的了解一下理论吧。</p>
+<a id="more"></a>
+
+<p>在 mongodb 中基本的概念是文档、集合、数据库</p>
+<h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><ul>
+<li>一个mongodb中可以建立多个数据库。</li>
+<li>MongoDB的默认数据库为”db”，该数据库存储在data目录中。</li>
+<li>MongoDB的单个实例可以容纳多个独立的数据库，每一个都有自己的集合和权限，不同的数据库也放置在不同的文件中。</li>
+<li>“show dbs” 命令可以显示所有数据的列表。</li>
+<li>执行 “db” 命令可以显示当前数据库对象或集合。</li>
+<li>运行”use”命令，可以连接到一个指定的数据库。</li>
+<li>有一些数据库名是保留的，可以直接访问这些有特殊作用的数据库。</li>
+</ul>
+<ul>
+<li>admin： 从权限的角度来看，这是”root”数据库。要是将一个用户添加到这个数据库，这个用户自动继承所有数据库的权限。一些特定的服务器端命令也只能从这个数据库运行，比如列出所有的数据库或者关闭服务器。</li>
+<li>local: 这个数据永远不会被复制，可以用来存储限于本地单台服务器的任意集合</li>
+<li>config: 当Mongo用于分片设置时，config数据库在内部使用，用于保存分片的相关信息。</li>
+</ul>
+<h2 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h2><ul>
+<li>集合就是 MongoDB 文档组，类似于 RDBMS （关系数据库管理系统：Relational Database Management System)中的表格。</li>
+<li>集合存在于数据库中，集合没有固定的结构，这意味着你在对集合可以插入不同格式和类型的数据，但通常情况下我们插入集合的数据都会有一定的关联性。<br>比如，我们可以将以下不同数据结构的文档插入到集合中：<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">&quot;site&quot;</span>:<span class="string">&quot;http://donglegend.com/&quot;</span>&#125;</span><br><span class="line">&#123;<span class="attr">&quot;site&quot;</span>:<span class="string">&quot;https://github.com/donglegend&quot;</span>,<span class="attr">&quot;name&quot;</span>:<span class="string">&quot;github&quot;</span>&#125;</span><br></pre></td></tr></table></figure></li>
+<li>合法的集合名</li>
+</ul>
+<ul>
+<li><p>集合名不能是空字符串””。</p>
+</li>
+<li><p>集合名不能含有\0字符（空字符)，这个字符表示集合名的结尾。</p>
+</li>
+<li><p>集合名不能以”system.”开头，这是为系统集合保留的前缀。</p>
+</li>
+<li><p>用户创建的集合名字不能含有保留字符。有些驱动程序的确支持在集合名里面包含，这是因为某些系统生成的集合中包含该字符。除非你要访问这种系统创建的集合，否则千万不要在名字里出现$。　</p>
+<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p>文档是一组键值(key-value)对(即BSON)。MongoDB 的文档不需要设置相同的字段，并且相同的字段不需要相同的数据类型，这与关系型数据库有很大的区别，也是 MongoDB 非常突出的特点。</p>
+<p>文档其实也就是一行数据，比如：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">&quot;site&quot;</span>:<span class="string">&quot;https://github.com/donglegend&quot;</span>,<span class="attr">&quot;name&quot;</span>:<span class="string">&quot;github&quot;</span>,<span class="attr">&quot;author&quot;</span>: <span class="string">&quot;donglegend&quot;</span>&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+  
+    </div>
+    
+        <! -- 添加捐赠图标 -->
+<div class="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+            &uarr;
+            <br>
+            欣赏此文？求鼓励，求支持！
+        </span>
+        <br>
+    </div>
+    <div id="donate_guide" class="donate_bar center hidden">
+        <!-- 支付宝打赏图案 -->
+        <img src="/img/zhifubao.jpg" alt="支付宝打赏">
+        <!-- 微信打赏图案 -->
+        <img src="/img/wechat.jpg" alt="微信打赏">
+    </div>
+    <script type="text/javascript">
+        document.getElementById('btn_donate').onclick = function () {
+            $('#donate_board').addClass('hidden');
+            $('#donate_guide').removeClass('hidden');
+        }
+    </script>
+</div>
+<! -- 添加捐赠图标 -->
+    
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/mongodb/">mongodb</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/javascript/">javascript</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://donglegend.github.io/2017/06/30/mongodb%E6%A6%82%E5%BF%B5/" data-title="mongodb概念 | donglegend" data-tsina="" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/06/30/mongodb数据库命令/" title="mongodb数据库命令">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  mongodb数据库命令</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/06/30/mongodb Shell 启动/"  title="mongodb Shell 启动">
+ <strong>NEXT:</strong><br/> 
+ <span>mongodb Shell 启动
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comment">
+    
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.</span> <span class="toc-text">数据库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E5%90%88"><span class="toc-number">2.</span> <span class="toc-text">集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%A1%A3"><span class="toc-number">3.</span> <span class="toc-text">文档</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/css/" title="css">css<sup>1</sup></a></li>
+		
+			<li><a href="/categories/http/" title="http">http<sup>3</sup></a></li>
+		
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>66</sup></a></li>
+		
+			<li><a href="/categories/yapi/" title="yapi">yapi<sup>1</sup></a></li>
+		
+			<li><a href="/categories/动画/" title="动画">动画<sup>3</sup></a></li>
+		
+			<li><a href="/categories/后端/" title="后端">后端<sup>3</sup></a></li>
+		
+			<li><a href="/categories/版本控制/" title="版本控制">版本控制<sup>8</sup></a></li>
+		
+			<li><a href="/categories/随笔/" title="随笔">随笔<sup>59</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/TypeScript/" title="TypeScript">TypeScript<sup>4</sup></a></li>
+		
+			<li><a href="/tags/ajax/" title="ajax">ajax<sup>1</sup></a></li>
+		
+			<li><a href="/tags/axios/" title="axios">axios<sup>1</sup></a></li>
+		
+			<li><a href="/tags/babel/" title="babel">babel<sup>1</sup></a></li>
+		
+			<li><a href="/tags/bower/" title="bower">bower<sup>1</sup></a></li>
+		
+			<li><a href="/tags/cocos/" title="cocos">cocos<sup>1</sup></a></li>
+		
+			<li><a href="/tags/code/" title="code">code<sup>2</sup></a></li>
+		
+			<li><a href="/tags/cors/" title="cors">cors<sup>2</sup></a></li>
+		
+			<li><a href="/tags/font/" title="font">font<sup>1</sup></a></li>
+		
+			<li><a href="/tags/ftp/" title="ftp">ftp<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>8</sup></a></li>
+		
+			<li><a href="/tags/gulp/" title="gulp">gulp<sup>3</sup></a></li>
+		
+			<li><a href="/tags/hash/" title="hash">hash<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>4</sup></a></li>
+		
+			<li><a href="/tags/http/" title="http">http<sup>2</sup></a></li>
+		
+			<li><a href="/tags/javascript/" title="javascript">javascript<sup>2</sup></a></li>
+		
+			<li><a href="/tags/mongodb/" title="mongodb">mongodb<sup>8</sup></a></li>
+		
+			<li><a href="/tags/nginx/" title="nginx">nginx<sup>3</sup></a></li>
+		
+			<li><a href="/tags/node/" title="node">node<sup>1</sup></a></li>
+		
+			<li><a href="/tags/php/" title="php">php<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 菜鸟总是在被虐中长大 <br/>
+			人生路上甜苦和喜忧 愿与你分担所有</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/donglegend?is_all=1" target="_blank" title="weibo"></a>
+		
+		
+		
+		<a href="https://github.com/donglegend" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">The first step is as good as half over. 
+			2024
+		</p>
+		<!-- <p class="copyright">
+			Powered by 
+			<a href="http://hexo.io" target="_blank" title="hexo">hexo</a> 
+			and Theme by 
+			<a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> 
+			© 2024 
+		
+		<a href="http://donglegend.github.io" target="_blank" title="donglegend">donglegend</a>
+		
+		</p> -->
+</div>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?db48d9ce7be510c8086c5439de4ce378";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var elBackTop = $("#backTop");
+  $(window).scroll(function() {
+    var el;
+    el = $(this);
+    if (el.scrollTop() > 300) {
+      return elBackTop.fadeIn();
+    } else {
+      return elBackTop.fadeOut();
+    }
+  });
+  elBackTop.on("click", function() {
+    return $('body,html').animate({
+      scrollTop: 0
+    }, 300);
+  });
+}); 
+</script>
+
+
+  </body>
+</html>
+
+<!-- <a target="_blank" rel="noopener" href="https://github.com/donglegend/"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a> -->
+
+<div id="backTop" style="position: fixed; right: 2rem; bottom: 3rem; width: 40px; height: 40px;background: #4691e2; cursor:pointer; border-radius: 6px; line-height: 40px; text-align:center; color: #fff;">顶部</div>

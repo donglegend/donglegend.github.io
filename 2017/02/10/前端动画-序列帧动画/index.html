@@ -1,0 +1,529 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="baidu-site-verification" content="uFV75F3ynA" />
+  
+    <title>前端动画-序列帧动画 | donglegend</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="donglegend">
+    
+    <meta name="description" content="前端写动画的情况不是很多，毕竟性能不是很好。一般网页动效，现在基本用css3就完成了。这里说道说道 用 js脚本完成的动画。
+可能很多刚入行的新手觉得写动画很复杂，有抵触心理，确实用脚本可能会涉及到一些逻辑及其设计模式，复杂的程序对技术水平要求比较高。
+这里不会深入探究，只做简单引导，希望大家能快速">
+    
+    
+    
+    
+    <link rel="alternate" href="/atom.xml" title="donglegend" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e5ceaae97fa66c463949d78385220bd4";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="donglegend" title="donglegend"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="donglegend">donglegend</a></h1>
+				<h2 class="blog-motto">阳光总在风雨后</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">文章</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:donglegend.github.io">
+					</form>
+					
+					</li>
+					
+
+
+
+				</ul>
+			</nav>		
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/02/10/前端动画-序列帧动画/" title="前端动画-序列帧动画" itemprop="url">前端动画-序列帧动画</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://donglegend.github.io" title="donglegend">donglegend</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2017-02-10T08:49:24.000Z" itemprop="datePublished">2017-02-10</time>
+    更新日期:<time datetime="2024-04-24T04:26:29.148Z" itemprop="dateModified">2024-04-24</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%88%E6%9E%9C%E9%A2%84%E8%A7%88-%E6%BA%90%E7%A0%81%E5%9C%B0%E5%9D%80"><span class="toc-number">1.</span> <span class="toc-text">效果预览 源码地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC%E5%8A%A8%E7%94%BB%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">脚本动画原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%BA%8F%E5%88%97%E5%B8%A7"><span class="toc-number">3.</span> <span class="toc-text">什么是序列帧</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%8F%E5%88%97%E5%B8%A7%E5%8A%A8%E7%94%BB"><span class="toc-number">4.</span> <span class="toc-text">序列帧动画</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.</span> <span class="toc-text">代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E5%BB%BAindex-html%E6%96%87%E4%BB%B6"><span class="toc-number">5.1.</span> <span class="toc-text">新建index.html文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E6%90%AD%E5%BB%BA%E4%BB%A3%E7%A0%81%E6%A1%86%E6%9E%B6"><span class="toc-number">5.2.</span> <span class="toc-text">分析搭建代码框架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E5%8A%9F%E8%83%BD%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.3.</span> <span class="toc-text">具体功能函数实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">6.</span> <span class="toc-text">结语</span></a></li></ol>
+		</div>
+		
+		<p>前端写动画的情况不是很多，毕竟性能不是很好。一般网页动效，现在基本用css3就完成了。<br>这里说道说道 用 js脚本完成的动画。</p>
+<p>可能很多刚入行的新手觉得写动画很复杂，有抵触心理，确实用脚本可能会涉及到一些逻辑及其设计模式，复杂的程序对技术水平要求比较高。</p>
+<p>这里不会深入探究，只做简单引导，希望大家能快速上手写出绚丽吊炸天的动画特效.</p>
+<p>废话太多，下面进入正题，本文先讲序列帧动画。</p>
+<h2 id="效果预览-源码地址"><a href="#效果预览-源码地址" class="headerlink" title="效果预览 源码地址"></a><a target="_blank" rel="noopener" href="http://donglegend.com/effects/animate/frame/index.html">效果预览</a> <a target="_blank" rel="noopener" href="https://github.com/donglegend/effects/blob/gh-pages/animate/frame/index.html">源码地址</a></h2><h2 id="脚本动画原理"><a href="#脚本动画原理" class="headerlink" title="脚本动画原理"></a>脚本动画原理</h2><p>所谓动画，简单讲就是在时间轴上改动元素外貌或者位置。就好比手机拍摄视频，记录下景物的变化。</p>
+<h2 id="什么是序列帧"><a href="#什么是序列帧" class="headerlink" title="什么是序列帧"></a>什么是序列帧</h2><p>就是一帧一帧的图像文件,如这匹可爱的小马：<br><img src="/images/animate/horse.jpg" alt="序列帧图"></p>
+<h2 id="序列帧动画"><a href="#序列帧动画" class="headerlink" title="序列帧动画"></a>序列帧动画</h2><p>把上面的小马从左到右，从上到下，播放一遍，每次展示一匹马的宽度和高度就成了动画</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>为了提高性能，这里用canvas实现</p>
+<h3 id="新建index-html文件"><a href="#新建index-html文件" class="headerlink" title="新建index.html文件"></a>新建index.html文件</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;Content-Type&quot;</span> <span class="attr">content</span>=<span class="string">&quot;text/html; charset=utf-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">id</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width,height=device-height,initial-scale=1,user-scalable=no&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>序列帧动画<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">&quot;text/css&quot;</span>&gt;</span></span><br><span class="line">    * &#123;</span><br><span class="line">        padding: 0;</span><br><span class="line">        margin: 0;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 画布容器 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;donglegend&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="comment">//书写脚本</span></span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="分析搭建代码框架"><a href="#分析搭建代码框架" class="headerlink" title="分析搭建代码框架"></a>分析搭建代码框架</h3><p>一切从简，面向过程开始</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//需要一个主函数 main 作为 程序启动入口</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"><span class="comment">//需要创建一个canvas画布</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setCanvas</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"><span class="comment">//需要加载图片</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loadResource</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"><span class="comment">// 加载完图片需要 把图片画到画布</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">draw</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"><span class="comment">// 需要一个主循环函数，就是一个定时器，不断刷新画布</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loop</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"><span class="comment">// 在loop循环函数里调用 show函数（作用一会就知道了）</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">show</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"><span class="comment">// 想想还缺少什么，为了方便画图片，可以写一个函数把图片按照区块 划分</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">divideCoordinate</span>(<span class="params"></span>)</span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="具体功能函数实现"><a href="#具体功能函数实现" class="headerlink" title="具体功能函数实现"></a>具体功能函数实现</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> _W = <span class="built_in">window</span>.innerWidth,</span><br><span class="line">    _H = <span class="built_in">window</span>.innerHeight,</span><br><span class="line">    _speed = <span class="number">1000</span> / <span class="number">10</span>, <span class="comment">//定时器执行频率</span></span><br><span class="line">    loopTimer = <span class="literal">null</span>, <span class="comment">//保存定时器id</span></span><br><span class="line">    canvasObj = <span class="literal">null</span>, <span class="comment">//画布</span></span><br><span class="line">    context = <span class="literal">null</span>, <span class="comment">// 画布环境句柄</span></span><br><span class="line">    imageList = [], <span class="comment">// 加载完图片存放地址</span></span><br><span class="line">    animateList = [], <span class="comment">// 划分图片区域结果</span></span><br><span class="line">    animateAction = <span class="number">0</span>, <span class="comment">// 序列帧图片第几行</span></span><br><span class="line">    animateCurframe = <span class="number">0</span>; <span class="comment">// 序列帧图片某行第几帧</span></span><br><span class="line">main();</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    setCanvas(<span class="string">&quot;donglegend&quot;</span>, _W, _H);</span><br><span class="line">    loadResource(&#123;</span><br><span class="line">    	<span class="string">&#x27;id&#x27;</span>: <span class="string">&#x27;dongsheng&#x27;</span>,</span><br><span class="line">    	<span class="string">&#x27;src&#x27;</span>: <span class="string">&#x27;images/dongsheng.jpg&#x27;</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**	</span></span><br><span class="line"><span class="comment"> * [setCanvas 创建画布]</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;[string]&#125;</span> </span>id [元素容器]</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;[number]&#125;</span> </span>w  [画布宽度]</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;[number]&#125;</span> </span>h  [画布高度]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setCanvas</span>(<span class="params">id, w, h</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> object = <span class="built_in">document</span>.getElementById(id);</span><br><span class="line">    object.innerHTML = <span class="string">&#x27;&lt;canvas id=&quot;&#x27;</span> + id + <span class="string">&#x27;_canvas&quot; width=&quot;&#x27;</span> + _W +<span class="string">&#x27;&quot; height=&quot;&#x27;</span>+_H+<span class="string">&#x27;&quot;&gt;&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;&lt;/canvas&gt;&#x27;</span>;</span><br><span class="line">    canvasObj = <span class="built_in">document</span>.getElementById(id + <span class="string">&quot;_canvas&quot;</span>);</span><br><span class="line">    context = canvasObj.getContext(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * [loadResource 加载图片]</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param  <span class="type">&#123;[object]&#125;</span> </span>item [&#123;id: &quot;xx&quot;, src: &quot;xx&quot;&#125;]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loadResource</span>(<span class="params">item</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> image = <span class="keyword">new</span> Image();</span><br><span class="line">    image.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        imageList[item.id] = image;</span><br><span class="line">        animateList = divideCoordinate(image.width, image.height, <span class="number">2</span>, <span class="number">4</span>);</span><br><span class="line">        loop();</span><br><span class="line">    &#125;</span><br><span class="line">    image.src = item.src;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * [divideCoordinate 按区域划分序列帧图片]</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param  <span class="type">&#123;[type]&#125;</span> </span>w   [总宽度]</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param  <span class="type">&#123;[type]&#125;</span> </span>h   [总高度]</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param  <span class="type">&#123;[type]&#125;</span> </span>row [总行数]</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param  <span class="type">&#123;[type]&#125;</span> </span>col [总列数]</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return <span class="type">&#123;[type]&#125;</span>     </span>[划分结果数组集]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">divideCoordinate</span>(<span class="params">w, h, row, col</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> i, j, cw = w / col, ch = h / row, r = [], c;</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; row; i++) &#123;</span><br><span class="line">		c = [];</span><br><span class="line">		<span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; col; j++) &#123;</span><br><span class="line">			c.push(&#123;<span class="attr">x</span> : cw * j, <span class="attr">y</span> : ch * i, <span class="attr">width</span> : cw, <span class="attr">height</span> : ch&#125;);</span><br><span class="line">		&#125;</span><br><span class="line">		r.push(c);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> r;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * [loop 程序主循环，控制页面不断刷新]</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return <span class="type">&#123;[type]&#125;</span> </span>[description]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loop</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (loopTimer) &#123;</span><br><span class="line">        <span class="built_in">clearInterval</span>(loopTimer);</span><br><span class="line">    &#125;</span><br><span class="line">    loopTimer = <span class="built_in">setInterval</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        show();</span><br><span class="line">    &#125;, _speed)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * [show 清空画布，展示画布]</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return <span class="type">&#123;[type]&#125;</span> </span>[description]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">show</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    context.fillRect(<span class="number">0</span>, <span class="number">0</span>, _W, _H);</span><br><span class="line">    draw(context, imageList[<span class="string">&#x27;dongsheng&#x27;</span>], animateList);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * [draw 画图片到画布]</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param  <span class="type">&#123;[type]&#125;</span> </span>c          [画布环境句柄]</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param  <span class="type">&#123;[type]&#125;</span> </span>bitmapData [图片资源]</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param  <span class="type">&#123;[type]&#125;</span> </span>list       [划分区域数组]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">draw</span>(<span class="params">c, bitmapData, list</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(animateCurframe &gt;= list[animateAction].length-<span class="number">1</span>)&#123;</span><br><span class="line">		animateCurframe = <span class="number">0</span>;</span><br><span class="line">		animateAction++;</span><br><span class="line">		<span class="keyword">if</span>(animateAction &gt; list.length-<span class="number">1</span>)&#123;</span><br><span class="line">			animateAction = <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		animateCurframe++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">var</span> p = list[animateAction][animateCurframe];</span><br><span class="line">	c.drawImage(</span><br><span class="line">		bitmapData,</span><br><span class="line">		p.x,</span><br><span class="line">		p.y,</span><br><span class="line">		p.width,</span><br><span class="line">		p.height,</span><br><span class="line">		(_W - p.width)/<span class="number">2</span>,</span><br><span class="line">		(_H - p.height)/<span class="number">3</span>,</span><br><span class="line">		p.width,</span><br><span class="line">		p.height</span><br><span class="line">	)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>至此，最简单版本的序列帧动画就完成了，可以自己下载源码修改自己想要的效果<br>旨在理解动画的原理，后续会详细更新 位移动画，比如小球弹跳等等。</p>
+</main>
+
+  
+    </div>
+    
+        <! -- 添加捐赠图标 -->
+<div class="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+            &uarr;
+            <br>
+            欣赏此文？求鼓励，求支持！
+        </span>
+        <br>
+    </div>
+    <div id="donate_guide" class="donate_bar center hidden">
+        <!-- 支付宝打赏图案 -->
+        <img src="/img/zhifubao.jpg" alt="支付宝打赏">
+        <!-- 微信打赏图案 -->
+        <img src="/img/wechat.jpg" alt="微信打赏">
+    </div>
+    <script type="text/javascript">
+        document.getElementById('btn_donate').onclick = function () {
+            $('#donate_board').addClass('hidden');
+            $('#donate_guide').removeClass('hidden');
+        }
+    </script>
+</div>
+<! -- 添加捐赠图标 -->
+    
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/特效/">特效</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/%E5%8A%A8%E7%94%BB/">动画</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://donglegend.github.io/2017/02/10/%E5%89%8D%E7%AB%AF%E5%8A%A8%E7%94%BB-%E5%BA%8F%E5%88%97%E5%B8%A7%E5%8A%A8%E7%94%BB/" data-title="前端动画-序列帧动画 | donglegend" data-tsina="" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/02/23/一行神奇的代码/" title="一行神奇的代码">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  一行神奇的代码</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/02/07/iphone-ios修改title无效/"  title="iphone/ios修改title无效">
+ <strong>NEXT:</strong><br/> 
+ <span>iphone/ios修改title无效
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comment">
+    
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%88%E6%9E%9C%E9%A2%84%E8%A7%88-%E6%BA%90%E7%A0%81%E5%9C%B0%E5%9D%80"><span class="toc-number">1.</span> <span class="toc-text">效果预览 源码地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC%E5%8A%A8%E7%94%BB%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">脚本动画原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%BA%8F%E5%88%97%E5%B8%A7"><span class="toc-number">3.</span> <span class="toc-text">什么是序列帧</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%8F%E5%88%97%E5%B8%A7%E5%8A%A8%E7%94%BB"><span class="toc-number">4.</span> <span class="toc-text">序列帧动画</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.</span> <span class="toc-text">代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E5%BB%BAindex-html%E6%96%87%E4%BB%B6"><span class="toc-number">5.1.</span> <span class="toc-text">新建index.html文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E6%90%AD%E5%BB%BA%E4%BB%A3%E7%A0%81%E6%A1%86%E6%9E%B6"><span class="toc-number">5.2.</span> <span class="toc-text">分析搭建代码框架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E5%8A%9F%E8%83%BD%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.3.</span> <span class="toc-text">具体功能函数实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">6.</span> <span class="toc-text">结语</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/css/" title="css">css<sup>1</sup></a></li>
+		
+			<li><a href="/categories/http/" title="http">http<sup>3</sup></a></li>
+		
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>66</sup></a></li>
+		
+			<li><a href="/categories/yapi/" title="yapi">yapi<sup>1</sup></a></li>
+		
+			<li><a href="/categories/动画/" title="动画">动画<sup>3</sup></a></li>
+		
+			<li><a href="/categories/后端/" title="后端">后端<sup>3</sup></a></li>
+		
+			<li><a href="/categories/版本控制/" title="版本控制">版本控制<sup>8</sup></a></li>
+		
+			<li><a href="/categories/随笔/" title="随笔">随笔<sup>59</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/TypeScript/" title="TypeScript">TypeScript<sup>4</sup></a></li>
+		
+			<li><a href="/tags/ajax/" title="ajax">ajax<sup>1</sup></a></li>
+		
+			<li><a href="/tags/axios/" title="axios">axios<sup>1</sup></a></li>
+		
+			<li><a href="/tags/babel/" title="babel">babel<sup>1</sup></a></li>
+		
+			<li><a href="/tags/bower/" title="bower">bower<sup>1</sup></a></li>
+		
+			<li><a href="/tags/cocos/" title="cocos">cocos<sup>1</sup></a></li>
+		
+			<li><a href="/tags/code/" title="code">code<sup>2</sup></a></li>
+		
+			<li><a href="/tags/cors/" title="cors">cors<sup>2</sup></a></li>
+		
+			<li><a href="/tags/font/" title="font">font<sup>1</sup></a></li>
+		
+			<li><a href="/tags/ftp/" title="ftp">ftp<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>8</sup></a></li>
+		
+			<li><a href="/tags/gulp/" title="gulp">gulp<sup>3</sup></a></li>
+		
+			<li><a href="/tags/hash/" title="hash">hash<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>4</sup></a></li>
+		
+			<li><a href="/tags/http/" title="http">http<sup>2</sup></a></li>
+		
+			<li><a href="/tags/javascript/" title="javascript">javascript<sup>2</sup></a></li>
+		
+			<li><a href="/tags/mongodb/" title="mongodb">mongodb<sup>8</sup></a></li>
+		
+			<li><a href="/tags/nginx/" title="nginx">nginx<sup>3</sup></a></li>
+		
+			<li><a href="/tags/node/" title="node">node<sup>1</sup></a></li>
+		
+			<li><a href="/tags/php/" title="php">php<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 菜鸟总是在被虐中长大 <br/>
+			人生路上甜苦和喜忧 愿与你分担所有</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/donglegend?is_all=1" target="_blank" title="weibo"></a>
+		
+		
+		
+		<a href="https://github.com/donglegend" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">The first step is as good as half over. 
+			2024
+		</p>
+		<!-- <p class="copyright">
+			Powered by 
+			<a href="http://hexo.io" target="_blank" title="hexo">hexo</a> 
+			and Theme by 
+			<a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> 
+			© 2024 
+		
+		<a href="http://donglegend.github.io" target="_blank" title="donglegend">donglegend</a>
+		
+		</p> -->
+</div>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?db48d9ce7be510c8086c5439de4ce378";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var elBackTop = $("#backTop");
+  $(window).scroll(function() {
+    var el;
+    el = $(this);
+    if (el.scrollTop() > 300) {
+      return elBackTop.fadeIn();
+    } else {
+      return elBackTop.fadeOut();
+    }
+  });
+  elBackTop.on("click", function() {
+    return $('body,html').animate({
+      scrollTop: 0
+    }, 300);
+  });
+}); 
+</script>
+
+
+  </body>
+</html>
+
+<!-- <a target="_blank" rel="noopener" href="https://github.com/donglegend/"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a> -->
+
+<div id="backTop" style="position: fixed; right: 2rem; bottom: 3rem; width: 40px; height: 40px;background: #4691e2; cursor:pointer; border-radius: 6px; line-height: 40px; text-align:center; color: #fff;">顶部</div>

@@ -1,0 +1,573 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="baidu-site-verification" content="uFV75F3ynA" />
+  
+    <title>关于应用中数据存储Store | donglegend</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="donglegend">
+    
+    <meta name="description" content="如何更好地管理应用Store">
+    
+    
+    
+    
+    <link rel="alternate" href="/atom.xml" title="donglegend" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e5ceaae97fa66c463949d78385220bd4";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="donglegend" title="donglegend"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="donglegend">donglegend</a></h1>
+				<h2 class="blog-motto">阳光总在风雨后</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">文章</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:donglegend.github.io">
+					</form>
+					
+					</li>
+					
+
+
+
+				</ul>
+			</nav>		
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2020/04/15/关于应用中数据存储Store/" title="关于应用中数据存储Store" itemprop="url">关于应用中数据存储Store</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://donglegend.github.io" title="donglegend">donglegend</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2020-04-15T09:24:43.000Z" itemprop="datePublished">2020-04-15</time>
+    更新日期:<time datetime="2024-04-24T04:26:29.147Z" itemprop="dateModified">2024-04-24</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Stores-%E5%AD%98%E5%82%A8"><span class="toc-number">1.</span> <span class="toc-text">Stores(存储)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%95%8C%E9%9D%A2%E7%8A%B6%E6%80%81%E7%9A%84store"><span class="toc-number">2.</span> <span class="toc-text">用户界面状态的store</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%86%E5%9F%9Fstore"><span class="toc-number">3.</span> <span class="toc-text">领域store</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%B1%A1"><span class="toc-number">4.</span> <span class="toc-text">领域对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%86%E5%9F%9Fstore%E7%A4%BA%E4%BE%8B"><span class="toc-number">5.</span> <span class="toc-text">领域store示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%84%E5%90%88%E5%A4%9A%E4%B8%AAstores"><span class="toc-number">6.</span> <span class="toc-text">组合多个stores</span></a></li></ol>
+		</div>
+		
+		<p>如何更好地管理应用Store</p>
+<a id="more"></a>
+
+
+<h2 id="Stores-存储"><a href="#Stores-存储" class="headerlink" title="Stores(存储)"></a>Stores(存储)</h2><p>Store的主要职责是将 逻辑 和 状态从组件中移至一个独立的，可测试的单元，这个单元在javascript前端和后端中都可以使用</p>
+<h2 id="用户界面状态的store"><a href="#用户界面状态的store" class="headerlink" title="用户界面状态的store"></a>用户界面状态的store</h2><p>至少两个 store 可以让绝大多数应用从中受益。 一个用于 UI 状态，一个或多个用于领域状态。 分离这两个 store 的优点是可以重用和测试领域状态，并且可以很好地在其他应用中重用它。 然而，UI 状态 store 对于你的应用来说通常非常特别。 但通常也很简单。 这个 store 通常没有太多的逻辑，但会存储大量的松散耦合的 UI 相关的信息。 这是理想状况下的，因为大多数应用在开发过程中会经常性地改变 UI 状态。</p>
+<p>通常可以在 UI stores 中找到的:</p>
+<ul>
+<li>Session 信息</li>
+<li>应用已经加载了的相关信息</li>
+<li>不会存储到后端的信息</li>
+<li>全局性影响 UI 的信息<ol>
+<li>窗口尺寸</li>
+<li>可访问性信息</li>
+<li>当前语言</li>
+<li>当前活动主题</li>
+</ol>
+</li>
+<li>用户界面状态瞬时影响多个、毫不相关的组件:<ol>
+<li>当前选择</li>
+<li>工具栏可见性, 等等</li>
+<li>向导的状态</li>
+<li>全局叠加的状态</li>
+</ol>
+</li>
+</ul>
+<p>这些信息开始作为某个特定组件的内部状态会是不错的选择(例如工具栏的可见性)。 但过了一段时间，你发现应用中的其他地方也需要这些信息。 您只需将状态移动到 UI 状态 store，而不是在组件树中向上推动状态，就像在普通的 React 应用中所做的那样。</p>
+<p>对于同构应用程序，你可能还希望使用正常默认值提供这个 store 的存根实现，以便所有组件按预期呈现。 可以通过在应用中传递属性到组件树中或使用 mobx-react 包中的 Provider 和 inject 来分发 UI 状态 store。</p>
+<p>store 示例 (使用 ES6 语法):</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; observable, computed, asStructure &#125; <span class="keyword">from</span> <span class="string">&#x27;mobx&#x27;</span></span><br><span class="line"><span class="keyword">import</span> jquery <span class="keyword">from</span> <span class="string">&#x27;jquery&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">UiState</span> </span>&#123;</span><br><span class="line">    @observable language = <span class="string">&#x27;en_US&#x27;</span></span><br><span class="line">    @observable pendingRequestCount = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// .struct 确保不会通知观察者，除非尺寸对象以深度相等的方式改变</span></span><br><span class="line">    @observable.struct windowDimensions = &#123;</span><br><span class="line">        width: jquery(<span class="built_in">window</span>).width(),</span><br><span class="line">        height: jquery(<span class="built_in">window</span>).height()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        jquery.resize(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.windowDimensions = getWindowDimensions()</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @computed <span class="keyword">get</span> <span class="title">appIsInSync</span>() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.pendingRequestCount === <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="领域store"><a href="#领域store" class="headerlink" title="领域store"></a>领域store</h2><p>你的应用应该包含一个或多个领域 store。 这些 store 存储你的应用所关心的数据。 待办事项、用户、书、电影、订单、凡是你能说出的。 你的应用很有可能至少有一个领域 store。</p>
+<p>单个领域 store 应该负责应用中的单个概念。 然而，单个概念可以采取多个子类型的形式，并且它通常是(循环)树结构。 举例来说，一个领域 store 负责产品，一个负责订单。 根据经验来说，如果两个概念之间的关系的本质是包含的，则它们通常应在同一个 store 中。 所以说一个 store 只是管理 领域对象。</p>
+<p>Store 的职责:</p>
+<ul>
+<li>实例化领域对象， 确保领域对象知道它们所属的 store。</li>
+<li>确保每个领域对象只有一个实例。 同一个用户、订单或者待办事项不应该在内存中存储两次。 这样，可以安全地使用引用，并确保正在查看的实例是最新的，而无需解析引用。 当调试时这十分快速、简单、方便。</li>
+<li>提供后端集成，当需要时存储数据。</li>
+<li>如果从后端接收到更新，则更新现有实例。</li>
+<li>为你的应用提供一个独立、通用、可测试的组件。</li>
+<li>要确保 store 是可测试的并且可以在服务端运行，你可能需要将实际的 websocket/http 请求移到单独的对象，以便你可以通过通信层抽象。</li>
+<li>Store 应该只有一个实例。</li>
+</ul>
+<h2 id="领域对象"><a href="#领域对象" class="headerlink" title="领域对象"></a>领域对象</h2><p>每个领域对象应使用自己的类(或构造函数)来表示。 建议以非规范化形式存储数据。 不必把客户端应用的状态看做数据库的一种。真实引用、循环数据结构和实例方法都是 JavaScript 中非常强大的概念。允许领域对象直接引用来自其他 store 的领域对象。记住: 我们想保持我们的操作和视图尽可能简单，并且需要管理引用和自己做垃圾回收可能是一种倒退。 不同于其他 Flux 系统架构，使用 MobX 不需要对数据进行标准化，而且这使得构建应用本质上复杂的部分变得更简单: 你的业务规则、操作和用户界面。 </p>
+<p>领域对象可以将其所有逻辑委托给它们所属的 store，如果这更符合你的应用的话。 可以将领域对象表示成普通对象，但类比普通对象有一些重要的优势:</p>
+<ul>
+<li>它们可以有方法。 这使得领域概念更容易独立使用，并减少应用所需的上下文感知的数量。 只是传递对象。 你不需要传递 store，或者必须弄清楚哪些操作可以在对象上应用，如果它们只是作为实例方法可用</li>
+<li>对于属性和方法的可见性，它们提供了细粒度的控制。</li>
+<li>使用构造函数创建的对象可以自由地混合 observable 属性和函数，以及非 observable 属性和方法。</li>
+<li>它们易于识别，并且可以进行严格的类型检查。</li>
+</ul>
+<h2 id="领域store示例"><a href="#领域store示例" class="headerlink" title="领域store示例"></a>领域store示例</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;observable, autorun&#125; <span class="keyword">from</span> <span class="string">&#x27;mobx&#x27;</span></span><br><span class="line"><span class="keyword">import</span> uuid <span class="keyword">from</span> <span class="string">&#x27;node-uuid&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">TodoStore</span> </span>&#123;</span><br><span class="line">    authorStore;</span><br><span class="line">    transportLayer;</span><br><span class="line">    @observable todos = [];</span><br><span class="line">    @observable isLoading = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params">transportLayer, authorStore</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.authorStore = authorStore; <span class="comment">// 可以为我们提供 author 的 store</span></span><br><span class="line">        <span class="built_in">this</span>.transportLayer = transportLayer; <span class="comment">// 可以为我们发起服务端请求的东西</span></span><br><span class="line">        <span class="built_in">this</span>.transportLayer.onReceiveTodoUpdate(<span class="function"><span class="params">updatedTodo</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.updateTodoFromServer(updatedTodo));</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="built_in">this</span>.loadTodos();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 从服务端拉取所有的 todo</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="title">loadTodos</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.isLoading = <span class="literal">true</span>;</span><br><span class="line">        <span class="built_in">this</span>.transportLayer.fetchTodos().then(<span class="function"><span class="params">fetchedTodos</span> =&gt;</span> &#123;</span><br><span class="line">            fetchedTodos.forEach(<span class="function"><span class="params">json</span> =&gt;</span> <span class="built_in">this</span>.updateTodoFromServer(json));</span><br><span class="line">            <span class="built_in">this</span>.isLoading = <span class="literal">false</span>;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 使用服务器中的信息更新 todo。保证一个 todo 只存在一次。</span></span><br><span class="line"><span class="comment">     * 可能构造一个新的 todo，更新现有的 todo,</span></span><br><span class="line"><span class="comment">     * 或删除 todo，如果它已经在服务器上被删除的话。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="title">updateTodoFromServer</span>(<span class="params">json</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> todo = <span class="built_in">this</span>.todos.find(<span class="function"><span class="params">todo</span> =&gt;</span> todo.id === json.id);</span><br><span class="line">        <span class="keyword">if</span> (!todo) &#123;</span><br><span class="line">            todo = <span class="keyword">new</span> Todo(<span class="built_in">this</span>, json.id);</span><br><span class="line">            <span class="built_in">this</span>.todos.push(todo);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (json.isDeleted) &#123;</span><br><span class="line">            <span class="built_in">this</span>.removeTodo(todo);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            todo.updateFromJson(json);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 在客户端和服务端都创建一个新的 todo</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="title">createTodo</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> todo = <span class="keyword">new</span> Todo(<span class="built_in">this</span>);</span><br><span class="line">        <span class="built_in">this</span>.todos.push(todo);</span><br><span class="line">        <span class="keyword">return</span> todo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 如果一个 todo 被删除了，将其从客户端内存中清理掉</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="title">removeTodo</span>(<span class="params">todo</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.todos.splice(<span class="built_in">this</span>.todos.indexOf(todo), <span class="number">1</span>);</span><br><span class="line">        todo.dispose();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">Todo</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * todo 的唯一 id, 不可改变。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    id = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    @observable completed = <span class="literal">false</span>;</span><br><span class="line">    @observable task = <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 引用一个 author 对象(来自 authorStore)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    @observable author = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    store = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 指示此对象的更改是否应提交到服务器</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    autoSave = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 为自动存储此 Todo 的副作用提供的清理方法</span></span><br><span class="line"><span class="comment">     * 参见 <span class="doctag">@dispose</span>.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    saveHandler = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    @computed <span class="keyword">get</span> <span class="title">asJson</span>() &#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            id: <span class="built_in">this</span>.id,</span><br><span class="line">            completed: <span class="built_in">this</span>.completed,</span><br><span class="line">            task: <span class="built_in">this</span>.task,</span><br><span class="line">            authorId: <span class="built_in">this</span>.author ? <span class="built_in">this</span>.author.id : <span class="literal">null</span></span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params">store, id=uuid.v4()</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.store = store;</span><br><span class="line">        <span class="built_in">this</span>.id = id;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">this</span>.saveHandler = reaction(</span><br><span class="line">            <span class="comment">// 观察在 JSON 中使用了的任何东西:</span></span><br><span class="line">            () =&gt; <span class="built_in">this</span>.asJson,</span><br><span class="line">            <span class="comment">// 如果 autoSave 为 true, 把 json 发送到服务端</span></span><br><span class="line">            (json) =&gt; &#123;</span><br><span class="line">                <span class="keyword">if</span> (<span class="built_in">this</span>.autoSave) &#123;</span><br><span class="line">                    <span class="built_in">this</span>.store.transportLayer.saveTodo(json);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 在客户端和服务端中删除此 todo</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="title">delete</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.store.transportLayer.deleteTodo(<span class="built_in">this</span>.id);</span><br><span class="line">        <span class="built_in">this</span>.store.removeTodo(<span class="built_in">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 使用服务端信息更新此 todo</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="title">updateFromJson</span>(<span class="params">json</span>)</span> &#123;</span><br><span class="line">        <span class="comment">// 请确保我们的更改不会发送回服务器</span></span><br><span class="line">        <span class="built_in">this</span>.autoSave = <span class="literal">false</span>;</span><br><span class="line">        <span class="built_in">this</span>.completed = json.completed;</span><br><span class="line">        <span class="built_in">this</span>.task = json.task;</span><br><span class="line">        <span class="built_in">this</span>.author = <span class="built_in">this</span>.store.authorStore.resolveAuthor(json.authorId);</span><br><span class="line">        <span class="built_in">this</span>.autoSave = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">dispose</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="comment">// 清理观察者</span></span><br><span class="line">        <span class="built_in">this</span>.saveHandler();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="组合多个stores"><a href="#组合多个stores" class="headerlink" title="组合多个stores"></a>组合多个stores</h2><p>一个经常被问到的问题就是，如何不使用单例来组合多个 stores 。它们之间如何通信呢？</p>
+<p>一种高效的模式是创建一个 RootStore 来实例化所有 stores ，并共享引用。这种模式的优势是:</p>
+<ol>
+<li>设置简单</li>
+<li>很好的支持强类型</li>
+<li>使得复杂的单元测试变得简单，因为你只需要实例化一个根 store</li>
+</ol>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RootStore</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.userStore = <span class="keyword">new</span> UserStore(<span class="built_in">this</span>)</span><br><span class="line">    <span class="built_in">this</span>.todoStore = <span class="keyword">new</span> TodoStore(<span class="built_in">this</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserStore</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">rootStore</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.rootStore = rootStore</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">getTodos</span>(<span class="params">user</span>)</span> &#123;</span><br><span class="line">    <span class="comment">// 通过根 store 来访问 todoStore</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.rootStore.todoStore.todos.filter(<span class="function"><span class="params">todo</span> =&gt;</span> todo.author === user)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TodoStore</span> </span>&#123;</span><br><span class="line">  @observable todos = []</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">rootStore</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.rootStore = rootStore</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">当使用 React 时，这个根 store 通常会通过使用 &lt;Provider rootStore=&#123;<span class="keyword">new</span> RootStore()&#125;&gt;<span class="xml"><span class="tag">&lt;<span class="name">App</span> /&gt;</span></span>&lt;/Provider&gt; 来插入到组件树之中。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://cn.mobx.js.org/best/store.html">原文链接</a></p>
+  
+    </div>
+    
+        <! -- 添加捐赠图标 -->
+<div class="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+            &uarr;
+            <br>
+            欣赏此文？求鼓励，求支持！
+        </span>
+        <br>
+    </div>
+    <div id="donate_guide" class="donate_bar center hidden">
+        <!-- 支付宝打赏图案 -->
+        <img src="/img/zhifubao.jpg" alt="支付宝打赏">
+        <!-- 微信打赏图案 -->
+        <img src="/img/wechat.jpg" alt="微信打赏">
+    </div>
+    <script type="text/javascript">
+        document.getElementById('btn_donate').onclick = function () {
+            $('#donate_board').addClass('hidden');
+            $('#donate_guide').removeClass('hidden');
+        }
+    </script>
+</div>
+<! -- 添加捐赠图标 -->
+    
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/store/">store</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/javascript/">javascript</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://donglegend.github.io/2020/04/15/%E5%85%B3%E4%BA%8E%E5%BA%94%E7%94%A8%E4%B8%AD%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8Store/" data-title="关于应用中数据存储Store | donglegend" data-tsina="" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2020/04/15/理解组件-实体-系统游戏编程模型/" title="理解组件-实体-系统游戏编程模型">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  理解组件-实体-系统游戏编程模型</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2020/03/13/Git标签管理/"  title="Git标签管理">
+ <strong>NEXT:</strong><br/> 
+ <span>Git标签管理
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comment">
+    
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Stores-%E5%AD%98%E5%82%A8"><span class="toc-number">1.</span> <span class="toc-text">Stores(存储)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%95%8C%E9%9D%A2%E7%8A%B6%E6%80%81%E7%9A%84store"><span class="toc-number">2.</span> <span class="toc-text">用户界面状态的store</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%86%E5%9F%9Fstore"><span class="toc-number">3.</span> <span class="toc-text">领域store</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%B1%A1"><span class="toc-number">4.</span> <span class="toc-text">领域对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%86%E5%9F%9Fstore%E7%A4%BA%E4%BE%8B"><span class="toc-number">5.</span> <span class="toc-text">领域store示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%84%E5%90%88%E5%A4%9A%E4%B8%AAstores"><span class="toc-number">6.</span> <span class="toc-text">组合多个stores</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/css/" title="css">css<sup>1</sup></a></li>
+		
+			<li><a href="/categories/http/" title="http">http<sup>3</sup></a></li>
+		
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>66</sup></a></li>
+		
+			<li><a href="/categories/yapi/" title="yapi">yapi<sup>1</sup></a></li>
+		
+			<li><a href="/categories/动画/" title="动画">动画<sup>3</sup></a></li>
+		
+			<li><a href="/categories/后端/" title="后端">后端<sup>3</sup></a></li>
+		
+			<li><a href="/categories/版本控制/" title="版本控制">版本控制<sup>8</sup></a></li>
+		
+			<li><a href="/categories/随笔/" title="随笔">随笔<sup>59</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/TypeScript/" title="TypeScript">TypeScript<sup>4</sup></a></li>
+		
+			<li><a href="/tags/ajax/" title="ajax">ajax<sup>1</sup></a></li>
+		
+			<li><a href="/tags/axios/" title="axios">axios<sup>1</sup></a></li>
+		
+			<li><a href="/tags/babel/" title="babel">babel<sup>1</sup></a></li>
+		
+			<li><a href="/tags/bower/" title="bower">bower<sup>1</sup></a></li>
+		
+			<li><a href="/tags/cocos/" title="cocos">cocos<sup>1</sup></a></li>
+		
+			<li><a href="/tags/code/" title="code">code<sup>2</sup></a></li>
+		
+			<li><a href="/tags/cors/" title="cors">cors<sup>2</sup></a></li>
+		
+			<li><a href="/tags/font/" title="font">font<sup>1</sup></a></li>
+		
+			<li><a href="/tags/ftp/" title="ftp">ftp<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>8</sup></a></li>
+		
+			<li><a href="/tags/gulp/" title="gulp">gulp<sup>3</sup></a></li>
+		
+			<li><a href="/tags/hash/" title="hash">hash<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>4</sup></a></li>
+		
+			<li><a href="/tags/http/" title="http">http<sup>2</sup></a></li>
+		
+			<li><a href="/tags/javascript/" title="javascript">javascript<sup>2</sup></a></li>
+		
+			<li><a href="/tags/mongodb/" title="mongodb">mongodb<sup>8</sup></a></li>
+		
+			<li><a href="/tags/nginx/" title="nginx">nginx<sup>3</sup></a></li>
+		
+			<li><a href="/tags/node/" title="node">node<sup>1</sup></a></li>
+		
+			<li><a href="/tags/php/" title="php">php<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 菜鸟总是在被虐中长大 <br/>
+			人生路上甜苦和喜忧 愿与你分担所有</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/donglegend?is_all=1" target="_blank" title="weibo"></a>
+		
+		
+		
+		<a href="https://github.com/donglegend" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">The first step is as good as half over. 
+			2024
+		</p>
+		<!-- <p class="copyright">
+			Powered by 
+			<a href="http://hexo.io" target="_blank" title="hexo">hexo</a> 
+			and Theme by 
+			<a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> 
+			© 2024 
+		
+		<a href="http://donglegend.github.io" target="_blank" title="donglegend">donglegend</a>
+		
+		</p> -->
+</div>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?db48d9ce7be510c8086c5439de4ce378";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var elBackTop = $("#backTop");
+  $(window).scroll(function() {
+    var el;
+    el = $(this);
+    if (el.scrollTop() > 300) {
+      return elBackTop.fadeIn();
+    } else {
+      return elBackTop.fadeOut();
+    }
+  });
+  elBackTop.on("click", function() {
+    return $('body,html').animate({
+      scrollTop: 0
+    }, 300);
+  });
+}); 
+</script>
+
+
+  </body>
+</html>
+
+<!-- <a target="_blank" rel="noopener" href="https://github.com/donglegend/"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a> -->
+
+<div id="backTop" style="position: fixed; right: 2rem; bottom: 3rem; width: 40px; height: 40px;background: #4691e2; cursor:pointer; border-radius: 6px; line-height: 40px; text-align:center; color: #fff;">顶部</div>
